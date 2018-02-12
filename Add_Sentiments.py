@@ -4,39 +4,55 @@ import pandas as pd
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import nltk
 
-nonsentimentedcolumn=12
+print("Gathering Sentiments of the descriptions")
 
-data=pd.read_csv('train.csv')
 
-nonsentimateddata=data.iloc[:,(nonsentimentedcolumn-1):nonsentimentedcolumn] #Non Sentimated Data
+data=pd.read_csv('train_with_cc_no_NaN.csv')
+data=data.iloc[: , :]
 
-#print(nonsentimateddata.shape[0])
+nonsentimentedcolumn=data.columns.get_loc('description')
 
-sentimentedscore = pd.DataFrame(columns=['description_score'])
+print('Column Number of Description' + str(nonsentimentedcolumn))
+
+
+nonsentimateddata=data.iloc[:,(nonsentimentedcolumn):nonsentimentedcolumn+1] #Non Sentimated Data
+
+
+
+number_rows = (nonsentimateddata.shape[0])
+
+
 
 
 counter=0
 #Attempt 3 
+a='bla'
+list1=[]
 Analyzer = SentimentIntensityAnalyzer()
 #nltk.download()
+print("calculating Sentiments of " + str(number_rows) + ' Rows')
 for index,datasend in nonsentimateddata.iterrows():
 		counter+=1
-		print("Calling API ..... " + str(counter))
-		sentiment = Analyzer.polarity_scores(datasend)
+		a=(datasend)
+		a=str(a)
+		#print(a)
+		#datasend.encode('utf-8')#, 'ignore')
+		#print("Calling API ..... " + str(counter))
+		sentiment = Analyzer.polarity_scores(a)
+		list1.append(sentiment)
 		print(sentiment)
-		#print(datasend['description'].encode("utf-8"))
-		sentimentedscore.append({'description_score': '{0}: {1}, '.format(k, ss[k])})
+		
+		
 
-
-
-print ("Completed calling API - In finally right now")
+print ("Completed The Sentiment analysis  ")
 #print(sentimentedscore[:,:])
-dataafterdesc=data.iloc[:,nonsentimentedcolumn:]
-newdataframe=(data.iloc[:,:nonsentimentedcolumn-1])
-newdataFrame=(pd.concat([newdataframe, sentimentedscore], axis=1))
-newdataframe=(pd.concat([newdataframe, dataafterdesc], axis=1))
-newdataframe.to_csv("Sentimented_Data.csv" ,encoding="utf-8")
-print("Completed")
+
+data['description_score'] = list1
+data.drop('description',1,inplace=True)
+data.drop('Unnamed: 0',1,inplace=True)
+data.drop('Unnamed: 0.1',1,inplace=True)
+data.to_csv("Sentimented_Data.csv" ,encoding="utf-8")
+print("File Created: Sentimented_Data.csv ")
 
 '''
 #for sentence in sentences:

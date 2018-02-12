@@ -16,7 +16,9 @@ data['number_of_reviews']=data['number_of_reviews'].fillna(0)
 
 
 data['thumbnail_url'] = data['thumbnail_url'].fillna('0')
-
-
+data['description'] = data['description'].fillna('0')
+data=data.iloc[:,2:]
 data.to_csv('train_with_no_NaN.csv' , encoding="utf-8")
 print("File Created :  train_with_no_NaN.csv ")
+
+import CombiningColumns 
