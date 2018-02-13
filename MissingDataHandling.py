@@ -20,7 +20,7 @@ data['number_of_reviews']=data['number_of_reviews'].fillna(0)
 
 data['thumbnail_url'] = data['thumbnail_url'].fillna('0')
 data['description'] = data['description'].fillna('0')
-
+data ['cleaning_fee'] = data ['cleaning_fee'].fillna('FALSE')
 
 #print(data['id'])
 #print(data['log_price'])
